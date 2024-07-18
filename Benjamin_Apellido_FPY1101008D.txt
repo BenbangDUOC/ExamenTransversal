@@ -1,0 +1,176 @@
+import random
+import os
+from statistics import geometric_mean
+import csv
+
+os.system("cls")
+juan = {"nombre": "Juan Perez", "sueldo":0}
+maria = {"nombre": "Maria Garcia", "sueldo":0}
+carlos = {"nombre": "Carlos Lopez", "sueldo":0}
+ana = {"nombre": "Ana Martinez", "sueldo":0}
+pedro = {"nombre": "Pedro Rodriguez", "sueldo":0}
+laura = {"nombre": "Laura Hernandez", "sueldo":0}
+miguel = {"nombre": "Miguel Sanchez", "sueldo":0}
+isabel = {"nombre": "Isabel Gomez", "sueldo":0}
+francisco = {"nombre": "Francisco Diaz", "sueldo":0}
+elena = {"nombre": "Elena Fernandez", "sueldo":0}
+trabajadores = [juan, maria, carlos, ana, pedro, laura, miguel, isabel, francisco, elena]
+
+"""
+for i in trabajadores:
+    if i["sueldo"] < 1:
+        print(f"Nombre empleado:{i["nombre"]}\nSueldo: {i['sueldo']}\n")
+"""
+
+def asignar():
+        try:
+            while True:
+                os.system("cls")
+                asignar = random.randint(300000, 2500000)
+                randomtrabajador = random.choice(trabajadores)
+                sueldo = randomtrabajador["sueldo"]
+                if sueldo < 300000:
+                    randomtrabajador["sueldo"] = asignar
+                    os.system("cls")
+                    print(f"Se asignó correctamente a {randomtrabajador["nombre"]}, el sueldo de: {asignar}\n")
+                    return
+                else:
+                    cantidad = 0
+                    for i in trabajadores:
+                        if i["sueldo"] < 300000:
+                            cantidad += 1
+                    if cantidad == 0:
+                        print("No hay más sueldos que asignar!")
+                        return
+
+        except Exception as ex:
+            os.system("cls")
+            print("*"*20)
+            print(f"Error almacenado como: {ex}")
+            print("*"*20)
+
+
+def clasificar():
+    try:
+        os.system("cls")
+        print("*"*20)
+        menor800 = 0
+        for i in trabajadores:
+            if i["sueldo"] < 800000 and i["sueldo"] > 0:
+                print(f"Nombre empleado: {i["nombre"]}\nSueldo: {i['sueldo']}\n")
+                menor800 += 1
+        print(f"Mostrando arriba los sueldos menores a $800.000 TOTAL: {menor800}\n","*"*20)
+        mayor800menor200 = 0
+        for i in trabajadores:
+            if i["sueldo"] > 800000 and i["sueldo"] < 2000000 and i["sueldo"] > 0 :
+                print(f"Nombre empleado: {i["nombre"]}\nSueldo: {i['sueldo']}\n")
+                mayor800menor200 += 1
+        print(f"Mostrando arriba los sueldos entre $800.000 y $2.000.000 TOTAL: {mayor800menor200}\n","*"*20)
+        mayor200 = 0
+        for i in trabajadores:
+            if i["sueldo"] > 2000000 and i["sueldo"] > 0:
+                print(f"Nombre empleado: {i["nombre"]}\nSueldo: {i['sueldo']}\n")
+                mayor200 += 1
+        print(f"Mostrando arriba los sueldos mayores a $2.000.000 TOTAL: {mayor200}\n","*"*20)
+
+        while True:
+            salir = input("\n\nPresione 1 para salir: ")
+            if salir == "1":
+                os.system("cls")
+                break
+
+    except Exception as ex:
+            os.system("cls")
+            print("*"*20)
+            print(f"Error almacenado como: {ex}")
+            print("*"*20)
+
+def estadistica():
+    try:
+        os.system("cls")
+        print("*"*20,"\nEstadísticas:\n")
+
+        masalto = 0
+        for i in trabajadores:
+            if masalto < i["sueldo"]:
+                masalto = i["sueldo"]
+            else:
+                masalto = masalto
+        print(f"El sueldo más alto es {masalto}")
+
+        masbajo = 0
+        for i in trabajadores:
+            if masbajo > i["sueldo"]:
+                masbajo = i["sueldo"]
+            else:
+                masbajo = masbajo
+        print(f"El sueldo más bajo es {masbajo}")
+
+        suma = 0
+        for i in trabajadores:
+            suma += i["sueldo"]
+        promedio = suma / len(trabajadores)
+        print(f"El promedio de sueldos es: {promedio}")
+
+        lista = []
+        for i in trabajadores:
+            lista.append(float(i["sueldo"]))
+        mediageometrica = round(geometric_mean(lista),len(trabajadores))
+        print(f"La media geométrica de los sueldos es: {mediageometrica}")
+
+        while True:
+            salir = input("\n\nPresione 1 para salir: ")
+            if salir == "1":
+                os.system("cls")
+                break
+    except Exception as ex:
+            os.system("cls")
+            print("*"*20)
+            print(f"Error almacenado como: {ex}")
+            print("*"*20)
+
+def reporte():
+    try:
+        with open("sueldos.csv", "w", newline="") as archivo:
+            writer = csv.writer(archivo)
+            writer.writerow(["Nombre empleado", "Sueldo base", "Descuento salud", "Descuento AFP", "Sueldo liquido"])
+            for i in trabajadores:
+                writer.writerow([i["nombre"], 
+                        i["sueldo"], 
+                        int(i["sueldo"]*0.07),
+                        int(i["sueldo"]*0.12),
+                        int(i["sueldo"]*0.81)])
+            os.system("cls")
+            print(f"El archivo CSV ha sido creado con éxito\n")
+    except Exception as ex:
+            os.system("cls")
+            print("*"*20)
+            print(f"Error al intentar crear el archivo CSV: {ex}")
+            print("*"*20)
+
+def main():
+    while True:
+        try:
+            print("Menú de sueldos\n\n1. Asignar sueldos aleatorios\n2. Clasificar sueldos\n3. Ver estadísticas")
+            opcion = input("4. Reporte de sueldos\n5. Salir del programa\n\nIngrese una opción: ")
+            if opcion == "1":
+                asignar()
+            elif opcion == "2":
+                clasificar()
+            elif opcion == "3":
+                estadistica()
+            elif opcion == "4":
+                reporte()
+            elif opcion == "5":
+                print("\nFinalizando programa...\nDesarrollado por Benjamín Neira\nRUT 21.258.599-8")
+                exit()
+            else:
+                print("Ingresa una opción válida!")
+        except Exception as ex:
+            os.system("cls")
+            print("*"*20)
+            print(f"Error almacenado como: {ex}")
+            print("*"*20)
+
+if __name__ == "__main__":
+    main()       
